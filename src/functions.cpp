@@ -1,4 +1,4 @@
-#include "functions.h"
+#include "../src/functions.h"
 
 bool contieneCodigo(const string &transmission, const string &mcode, size_t &pos) {
     pos = transmission.find(mcode);
