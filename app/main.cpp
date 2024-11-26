@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "config.hpp"
-#include "functions.h"
+#include "../src/functions.h"
 
 
 using namespace std;
