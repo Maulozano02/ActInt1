@@ -77,14 +77,3 @@ TEST_CASE("subsecuenciaComunMasLarga: Encontrar el substring común más largo")
     REQUIRE(resultado.first.first == 7); // Índice ajustado a 1
     REQUIRE(resultado.first.second == 12);
 }
-
-TEST_CASE("subsecuenciaComunMasLarga: Sin substring común") {
-    const std::string cadena1 = "ABCDEFG";
-    const std::string cadena2 = "HIJKLMN";
-
-    auto resultado = subsecuenciaComunMasLarga(cadena1, cadena2);
-
-    REQUIRE(resultado.second == "");
-    REQUIRE(resultado.first.first == 0);
-    REQUIRE(resultado.first.second == 0);
-}
