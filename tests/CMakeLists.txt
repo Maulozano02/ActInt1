@@ -1,7 +1,7 @@
 include(Catch)
 
 add_executable("UnitTestFoo" "test_foo.cc")
-target_link_libraries("UnitTestFoo" PUBLIC "LibFoo")
+target_link_libraries("UnitTestFoo" PUBLIC "Libfunctions")
 target_link_libraries("UnitTestFoo" PRIVATE Catch2::Catch2WithMain)
 
 add_executable("UnitTestBar" "test_bar.cc")
