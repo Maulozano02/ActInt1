@@ -6,7 +6,7 @@
 ├── CMakeLists.txt
 ├── app
 │   ├── CMakesLists.txt
-│   └── main.cc
+│   └── main.ccp
 ├── cmake
 │   └── cmake modules
 ├── docs
