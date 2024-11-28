@@ -15,40 +15,45 @@
 using namespace std;
 
 int main() {
-    ifstream transmission1File("transmission1.txt");
-    ifstream transmission2File("transmission2.txt");
-    ifstream mcode1File("mcode1.txt");
-    ifstream mcode2File("mcode2.txt");
-    ifstream mcode3File("mcode3.txt");
+    // Archivos a cargar
+    vector<string> archivos = {
+        "transmission1.txt",
+        "transmission2.txt",
+        "mcode1.txt",
+        "mcode2.txt",
+        "mcode3.txt"
+    };
 
-    if (!transmission1File || !transmission2File || !mcode1File || !mcode2File || !mcode3File) {
-        cerr << "Error abriendo los archivos" << endl;
+    // Contenido de los archivos
+    vector<string> contenidos;
+
+    // Verificar y cargar los archivos
+    if (!verificarArchivos(archivos, contenidos)) {
         return 1;
     }
 
-    string transmission1((istreambuf_iterator<char>(transmission1File)), istreambuf_iterator<char>());
-    string transmission2((istreambuf_iterator<char>(transmission2File)), istreambuf_iterator<char>());
-    string mcode1((istreambuf_iterator<char>(mcode1File)), istreambuf_iterator<char>());
-    string mcode2((istreambuf_iterator<char>(mcode2File)), istreambuf_iterator<char>());
-    string mcode3((istreambuf_iterator<char>(mcode3File)), istreambuf_iterator<char>());
+    // Dividir el contenido en variables
+    string transmission1 = contenidos[0];
+    string transmission2 = contenidos[1];
+    vector<string> mcodes = {contenidos[2], contenidos[3], contenidos[4]};
 
-    size_t pos;
-    cout << (contieneCodigo(transmission1, mcode1, pos) ? "true " + to_string(pos + 1) : "false") << endl;
-    cout << (contieneCodigo(transmission1, mcode2, pos) ? "true " + to_string(pos + 1) : "false") << endl;
-    cout << (contieneCodigo(transmission1, mcode3, pos) ? "true " + to_string(pos + 1) : "false") << endl;
+    // Parte 1: Verificar códigos maliciosos
+    cout << "Resultados para transmission1:" << endl;
+    verificarCodigosMaliciosos(transmission1, mcodes);
 
-    cout << (contieneCodigo(transmission2, mcode1, pos) ? "true " + to_string(pos + 1) : "false") << endl;
-    cout << (contieneCodigo(transmission2, mcode2, pos) ? "true " + to_string(pos + 1) : "false") << endl;
-    cout << (contieneCodigo(transmission2, mcode3, pos) ? "true " + to_string(pos + 1) : "false") << endl;
+    cout << "Resultados para transmission2:" << endl;
+    verificarCodigosMaliciosos(transmission2, mcodes);
 
-    pair<pair<int, int>, string> pal1 = palindromoMasLargo(transmission1);
-    pair<pair<int, int>, string> pal2 = palindromoMasLargo(transmission2);
+    // Parte 2: Mostrar palíndromos más largos
+    cout << "Palíndromo más largo en transmission1:" << endl;
+    mostrarPalindromo(transmission1);
 
-    cout << pal1.first.first << " " << pal1.first.second << " " << pal1.second << endl;
-    cout << pal2.first.first << " " << pal2.first.second << " " << pal2.second << endl;
+    cout << "Palíndromo más largo en transmission2:" << endl;
+    mostrarPalindromo(transmission2);
 
-    pair<pair<int, int>, string> subseq = subsecuenciaComunMasLarga(transmission1, transmission2);
-    cout << subseq.first.first << " " << subseq.first.second << " " << subseq.second << endl;
+    // Parte 3: Mostrar subsecuencia común más larga
+    cout << "Subsecuencia común más larga entre transmission1 y transmission2:" << endl;
+    mostrarSubsecuenciaComun(transmission1, transmission2);
 
     return 0;
 }
