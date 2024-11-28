@@ -15,70 +15,41 @@
 
 using namespace std;
 
-// Función para leer un archivo y retornar su contenido
-string leerArchivo(const string& filename) {
-    ifstream file(filename);
-    if (!file) {
-        cerr << "Error abriendo el archivo: " << filename << endl;
-        return "";
-    }
-    return string((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
-}
-
-// Función para verificar códigos maliciosos en una transmisión
-void verificarCodigosMaliciosos(const string& transmission, const vector<string>& mcodes) {
-    size_t pos;
-    for (const auto& mcode : mcodes) {
-        cout << (contieneCodigo(transmission, mcode, pos) ? "true " + to_string(pos + 1) : "false") << endl;
-    }
-}
-
-// Función para procesar y mostrar el palíndromo más largo
-void mostrarPalindromo(const string& transmission) {
-    auto resultado = palindromoMasLargo(transmission);
-    cout << resultado.first.first << " " << resultado.first.second << " " << resultado.second << endl;
-}
-
-// Función para procesar y mostrar la subsecuencia común más larga entre dos transmisiones
-void mostrarSubsecuenciaComun(const string& transmission1, const string& transmission2) {
-    auto resultado = subsecuenciaComunMasLarga(transmission1, transmission2);
-    cout << resultado.first.first << " " << resultado.first.second << " " << resultado.second << endl;
-}
-
 int main() {
-    // Leer archivos
-    string transmission1 = leerArchivo("transmission1.txt");
-    string transmission2 = leerArchivo("transmission2.txt");
+    ifstream transmission1File("transmission1.txt");
+    ifstream transmission2File("transmission2.txt");
+    ifstream mcode1File("mcode1.txt");
+    ifstream mcode2File("mcode2.txt");
+    ifstream mcode3File("mcode3.txt");
 
-    vector<string> mcodes = {
-        leerArchivo("mcode1.txt"),
-        leerArchivo("mcode2.txt"),
-        leerArchivo("mcode3.txt")
-    };
-
-    // Verificar si los archivos se cargaron correctamente
-    if (transmission1.empty() || transmission2.empty() || mcodes[0].empty() || mcodes[1].empty() || mcodes[2].empty()) {
-        cerr << "Error: Uno o más archivos no se pudieron cargar correctamente." << endl;
+    if (!transmission1File || !transmission2File || !mcode1File || !mcode2File || !mcode3File) {
+        cerr << "Error abriendo los archivos" << endl;
         return 1;
     }
 
-    // Parte 1: Verificar códigos maliciosos
-    cout << "Resultados para transmission1:" << endl;
-    verificarCodigosMaliciosos(transmission1, mcodes);
+    string transmission1((istreambuf_iterator<char>(transmission1File)), istreambuf_iterator<char>());
+    string transmission2((istreambuf_iterator<char>(transmission2File)), istreambuf_iterator<char>());
+    string mcode1((istreambuf_iterator<char>(mcode1File)), istreambuf_iterator<char>());
+    string mcode2((istreambuf_iterator<char>(mcode2File)), istreambuf_iterator<char>());
+    string mcode3((istreambuf_iterator<char>(mcode3File)), istreambuf_iterator<char>());
 
-    cout << "Resultados para transmission2:" << endl;
-    verificarCodigosMaliciosos(transmission2, mcodes);
+    size_t pos;
+    cout << (contieneCodigo(transmission1, mcode1, pos) ? "true " + to_string(pos + 1) : "false") << endl;
+    cout << (contieneCodigo(transmission1, mcode2, pos) ? "true " + to_string(pos + 1) : "false") << endl;
+    cout << (contieneCodigo(transmission1, mcode3, pos) ? "true " + to_string(pos + 1) : "false") << endl;
 
-    // Parte 2: Palíndromos más largos
-    cout << "Palíndromo más largo en transmission1:" << endl;
-    mostrarPalindromo(transmission1);
+    cout << (contieneCodigo(transmission2, mcode1, pos) ? "true " + to_string(pos + 1) : "false") << endl;
+    cout << (contieneCodigo(transmission2, mcode2, pos) ? "true " + to_string(pos + 1) : "false") << endl;
+    cout << (contieneCodigo(transmission2, mcode3, pos) ? "true " + to_string(pos + 1) : "false") << endl;
 
-    cout << "Palíndromo más largo en transmission2:" << endl;
-    mostrarPalindromo(transmission2);
+    pair<pair<int, int>, string> pal1 = palindromoMasLargo(transmission1);
+    pair<pair<int, int>, string> pal2 = palindromoMasLargo(transmission2);
 
-    // Parte 3: Subsecuencia común más larga
-    cout << "Subsecuencia común más larga entre transmission1 y transmission2:" << endl;
-    mostrarSubsecuenciaComun(transmission1, transmission2);
+    cout << pal1.first.first << " " << pal1.first.second << " " << pal1.second << endl;
+    cout << pal2.first.first << " " << pal2.first.second << " " << pal2.second << endl;
+
+    pair<pair<int, int>, string> subseq = subsecuenciaComunMasLarga(transmission1, transmission2);
+    cout << subseq.first.first << " " << subseq.first.second << " " << subseq.second << endl;
 
     return 0;
 }
