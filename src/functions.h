@@ -20,19 +20,4 @@ pair<pair<int, int>, string> palindromoMasLargo(const string &transmission);
 // Encuentra la subsecuencia más larga en común entre dos transmisiones
 pair<pair<int, int>, string> subsecuenciaComunMasLarga(const string &transmission1, const string &transmission2);
 
-// Función para leer un archivo y retornar su contenido como string
-string leerArchivo(const string& filename);
-
-// Función para verificar la existencia de los archivos y cargarlos
-bool verificarArchivos(vector<string>& archivos, vector<string>& contenidos);
-
-// Función para verificar códigos maliciosos en una transmisión
-void verificarCodigosMaliciosos(const string& transmission, const vector<string>& mcodes);
-
-// Función para mostrar el palíndromo más largo en una transmisión
-void mostrarPalindromo(const string& transmission);
-
-// Función para mostrar la subsecuencia común más larga entre dos transmisiones
-void mostrarSubsecuenciaComun(const string& transmission1, const string& transmission2);
-
 #endif // FUNCTIONS_H

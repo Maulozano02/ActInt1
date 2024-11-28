@@ -1,47 +1,54 @@
 #include "../src/functions.h"
-#include <fstream>
 
-// Implementación de leerArchivo
-string leerArchivo(const string& filename) {
-    ifstream file(filename);
-    if (!file) {
-        cerr << "Error abriendo el archivo: " << filename << endl;
-        return "";
-    }
-    return string((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
+bool contieneCodigo(const string &transmission, const string &mcode, size_t &pos) {
+    pos = transmission.find(mcode);
+    return pos != string::npos;
 }
 
-// Implementación de verificarArchivos
-bool verificarArchivos(vector<string>& archivos, vector<string>& contenidos) {
-    for (const auto& archivo : archivos) {
-        string contenido = leerArchivo(archivo);
-        if (contenido.empty()) {
-            cerr << "Error: Archivo no encontrado o vacío -> " << archivo << endl;
+bool esPalindromo(const string &str, int left, int right) {
+    while (left < right) {
+        if (str[left] != str[right]) {
             return false;
         }
-        contenidos.push_back(contenido);
+        left++;
+        right--;
     }
     return true;
 }
 
-// Implementación de verificarCodigosMaliciosos
-void verificarCodigosMaliciosos(const string& transmission, const vector<string>& mcodes) {
-    size_t pos;
-    for (const auto& mcode : mcodes) {
-        cout << (contieneCodigo(transmission, mcode, pos) ? "true " + to_string(pos + 1) : "false") << endl;
+pair<pair<int, int>, string> palindromoMasLargo(const string &transmission) {
+    int n = transmission.size();
+    int maxLength = 1, start = 0;
+
+    for (int i = 0; i < n; i++) {
+        for (int j = i; j < n; j++) {
+            if (esPalindromo(transmission, i, j) && (j - i + 1) > maxLength) {
+                start = i;
+                maxLength = j - i + 1;
+            }
+        }
     }
+
+    return make_pair(make_pair(start + 1, start + maxLength), transmission.substr(start, maxLength));
 }
 
-// Implementación de mostrarPalindromo
-void mostrarPalindromo(const string& transmission) {
-    auto resultado = palindromoMasLargo(transmission);
-    cout << resultado.first.first << " " << resultado.first.second << " " << resultado.second << endl;
-}
+pair<pair<int, int>, string> subsecuenciaComunMasLarga(const string &transmission1, const string &transmission2) {
+    int m = transmission1.size();
+    int n = transmission2.size();
+    int maxLength = 0, endIdx = 0;
+    vector<vector<int>> dp(m + 1, vector<int>(n + 1, 0));
 
-// Implementación de mostrarSubsecuenciaComun
-void mostrarSubsecuenciaComun(const string& transmission1, const string& transmission2) {
-    auto resultado = subsecuenciaComunMasLarga(transmission1, transmission2);
-    cout << resultado.first.first << " " << resultado.first.second << " " << resultado.second << endl;
-}
+    for (int i = 1; i <= m; i++) {
+        for (int j = 1; j <= n; j++) {
+            if (transmission1[i - 1] == transmission2[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+                if (dp[i][j] > maxLength) {
+                    maxLength = dp[i][j];
+                    endIdx = i;
+                }
+            }
+        }
+    }
 
-// Implementaciones previas de contieneCodigo, esPalindromo, palindromoMasLargo, y subsecuenciaComunMasLarga permanecen iguales
+    return make_pair(make_pair(endIdx - maxLength + 1, endIdx), transmission1.substr(endIdx - maxLength, maxLength));
+}
